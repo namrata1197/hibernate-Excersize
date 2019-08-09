@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.transaction.Transactional;
 import org.hibernate.Session;
 
 /**
@@ -15,6 +14,7 @@ import org.hibernate.Session;
  * @author namrata
  */
 public class UserDao {
+
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager = MyEntityManager.getEntityManager();
 
@@ -55,23 +55,17 @@ public class UserDao {
 
     public void removeUser(int id) {
         User old = entityManager.find(User.class, id);
-         System.out.print("Name: " + old.getName());
-            System.out.print("  Phone: " + old.getPhone());
-            System.out.println("");
-            
-            EntityTransaction tx = null;
-             Session session = null;
+        EntityTransaction tx = null;
+        Session session = null;
 
-             try {
+        try {
             session = entityManager.unwrap(Session.class);
-                 tx = entityManager.getTransaction();
-
-              
-                 tx.begin();
-              entityManager.remove(old);
-                 tx.commit();
+            tx = entityManager.getTransaction();
+            tx.begin();
+            entityManager.remove(old);
+            tx.commit();
         } catch (Exception e) {
         }
-        
+
     }
 }
